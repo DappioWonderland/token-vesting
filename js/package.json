@@ -14,6 +14,7 @@
   "scripts": {
     "prepublish": "tsc",
     "dev": "tsc && node dist/dev.js",
+    "unlock": "tsc && node dist/unlock.js",
     "build": "tsc",
     "lint": "npm run pretty && eslint .",
     "lint:fix": "npm run pretty:fix && eslint . --fix",

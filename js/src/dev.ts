@@ -1,12 +1,13 @@
-import { Connection, PublicKey, Keypair } from '@solana/web3.js';
+import { Connection, PublicKey, Keypair, Commitment } from '@solana/web3.js';
 import fs from 'fs';
+
 import {
   Numberu64,
   generateRandomSeed,
   signTransactionInstructions,
 } from './utils';
 import { Schedule } from './state';
-import { create, TOKEN_VESTING_PROGRAM_ID } from './main';
+import { TOKEN_VESTING_PROGRAM_ID, create } from './main';
 
 /**
  *
@@ -17,14 +18,30 @@ import { create, TOKEN_VESTING_PROGRAM_ID } from './main';
  */
 
 /** Path to your wallet */
-const WALLET_PATH = '';
+const WALLET_PATH = '../../../.config/solana/id.json';
 const wallet = Keypair.fromSecretKey(
   new Uint8Array(JSON.parse(fs.readFileSync(WALLET_PATH).toString())),
 );
 
 /** There are better way to generate an array of dates but be careful as it's irreversible */
 const DATES = [
-  new Date(2022, 12),
+  new Date(2021, 8),
+  new Date(2021, 9),
+  new Date(2021, 10),
+  new Date(2021, 11),
+  new Date(2021, 12),
+  new Date(2022, 1),
+  new Date(2022, 2),
+  new Date(2022, 3),
+  new Date(2022, 4),
+  new Date(2022, 5),
+  new Date(2022, 6),
+  new Date(2022, 7),
+  new Date(2022, 8),
+  new Date(2022, 9),
+  new Date(2022, 10),
+  new Date(2022, 11),
+  new Date(2023, 12),
   new Date(2023, 1),
   new Date(2023, 2),
   new Date(2023, 3),
@@ -36,36 +53,30 @@ const DATES = [
   new Date(2023, 9),
   new Date(2023, 10),
   new Date(2023, 11),
-  new Date(2024, 12),
-  new Date(2024, 2),
-  new Date(2024, 3),
-  new Date(2024, 4),
-  new Date(2024, 5),
-  new Date(2024, 6),
-  new Date(2024, 7),
-  new Date(2024, 8),
-  new Date(2024, 9),
-  new Date(2024, 10),
-  new Date(2024, 11),
-  new Date(2024, 12),
+  new Date(2023, 12),
 ];
 
 /** Info about the desintation */
-const DESTINATION_OWNER = new PublicKey('');
-const DESTINATION_TOKEN_ACCOUNT = new PublicKey('');
+const DESTINATION_OWNER = new PublicKey('BgdtDEEmn95wakgQRx4jAVqn8jsSPBhDwxE8NTPnmyon');
+const DESTINATION_TOKEN_ACCOUNT = new PublicKey('9G76pKiXGQKyya9cDvbYWu3KqJTjU1GKHn1BxV6iMukV');
 
 /** Token info */
-const MINT = new PublicKey('');
-const DECIMALS = 0;
+const MINT = new PublicKey('Ef7byi1K9bGpDczXtnHpmtkmTo7NibUv4SYgTRvEWx3C');
+const DECIMALS = 9;
+
+// 100000 tokens
 
 /** Info about the source */
-const SOURCE_TOKEN_ACCOUNT = new PublicKey('');
+const SOURCE_TOKEN_ACCOUNT = new PublicKey('6Z2qGTgKfkXrPqgx3AjfN6UpvF98PXohi1REgDDiS6nG');
 
 /** Amount to give per schedule */
-const AMOUNT_PER_SCHEDULE = 0;
+const AMOUNT_PER_SCHEDULE = 10;
 
 /** Your RPC connection */
-const connection = new Connection('');
+const commitment: Commitment = 'single';
+const connection = new Connection('https://rpc-mainnet-fork.dappio.xyz', { commitment, wsEndpoint: 'wss://rpc-mainnet-fork.dappio.xyz/ws' });
+
+const seed = generateRandomSeed();
 
 /** Do some checks before sending the tokens */
 const checks = async () => {
@@ -100,7 +111,6 @@ const lock = async () => {
       ),
     );
   }
-  const seed = generateRandomSeed();
 
   console.log(`Seed: ${seed}`);
 
